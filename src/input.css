@@ -23,3 +23,7 @@
     @apply h-12 rounded-xl border-2 border-line bg-white px-3 text-base outline-none;
   }
 }
+
+.poke_img{
+  width: 180px;
+}

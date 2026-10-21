@@ -16,4 +16,28 @@
 //
 // Pensez à citer la source de vos images dans le README.
 
-const creatures = [];
+
+export async function getCreatures(limit = 6) {
+    try {
+        const response = await fetch(`https://pokeapi.co/api/v2/pokemon?limit=${limit}`);
+        
+        if (!response.ok) {
+            throw new Error("Could not fetch data");
+        }
+
+        const data = await response.json();
+
+        // Fetch detailed data for each Pokémon in parallel
+        const detailedCreatures = await Promise.all(
+            data.results.map(async (pokemon) => {
+                const res = await fetch(pokemon.url);
+                return await res.json();
+            })
+        );
+
+        return detailedCreatures;
+    } catch (error) {
+        console.error(error);
+        return [];
+    }
+}

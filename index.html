@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Mon Dex</title>
   <link rel="stylesheet" href="./dist/output.css">
+  <link rel="stylesheet" href="./src/input.css">
 </head>
 <body class="bg-ground font-body text-ink">
 
@@ -53,7 +54,7 @@
     <div class="grid grid-cols-1 sm:grid-cols-2 items-start gap-8 lg:grid-cols-[minmax(0,1fr)_420px]">
 
       <!-- ===================== GRILLE DES CRÉATURES ===================== -->
-      <section id="grid" aria-label="Créatures" class="grid min-w-0 grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-3">
+      <section id="grid" aria-label="Créatures" class="grid min-w-0 grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-3 cards-container">
 
         <!-- Carte écrite à la main : à remplacer par des cartes générées en JS (Partie 2) -->
         <article class="flex flex-col gap-3 rounded-card bg-white p-3 pb-4">
@@ -236,7 +237,7 @@
   </footer>
 
   <!-- data.js (à créer) doit être chargé AVANT script.js -->
-  <script src="./data.js"></script>
-  <script src="./script.js"></script>
+  <script type="module" src="./data.js"></script>
+  <script type="module" src="./script.js"></script>
 </body>
 </html>
