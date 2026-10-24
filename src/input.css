@@ -27,3 +27,6 @@
 .poke_img{
   width: 180px;
 }
+.poke-card{
+  cursor: pointer;
+}
