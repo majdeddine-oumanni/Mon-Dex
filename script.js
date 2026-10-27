@@ -102,22 +102,31 @@ detailSection.addEventListener('click', (event) => {
 // (sans tenir compte des majuscules).
 // -------------------------------------------------------------
 const rech = document.querySelector("#search");
-const tpSelect = document.querySelector("#typeFilter");
+const filtersContainer = document.querySelector("#filters");
+
+let currentType = "tous"; 
 
 function searchFilter() {
-  const text = rech.value.toLowerCase().trim();
-  const type = tpSelect.value;
+    const text = rech.value.toLowerCase().trim();
 
     const res = allCreatures.filter((creature) => {
-    const perName = creature.name.toLowerCase().includes(text);
-    const perType = type === "tous" || creature.types[0]?.type?.name || 'normal' === type;
 
-    return perName && perType;
-  });
-  init(res);
+        const perName = creature.name.toLowerCase().includes(text);
+
+        const primaryType = creature.types[0]?.type?.name || 'normal';
+
+        const perType = currentType === "tous" || primaryType === currentType;
+
+        return perName && perType;
+    });
+
+    init(res);
 }
-rech.addEventListener("input", searchFilter);
-tpSelect.addEventListener("click", searchFilter);
+
+if (rech) {
+    rech.addEventListener("input", searchFilter);
+}
+
 
 // -------------------------------------------------------------
 // 4. FILTRE
@@ -125,7 +134,22 @@ tpSelect.addEventListener("click", searchFilter);
 // « Tous » réinitialise le filtre.
 // La recherche et le filtre fonctionnent ENSEMBLE.
 // -------------------------------------------------------------
+// 2. Listen for clicks on the filter container using Event Delegation
+if (filtersContainer) {
+    filtersContainer.addEventListener("click", (event) => {
+        const clickedBtn = event.target.closest('.type-btn');
+        if (!clickedBtn) return; 
 
+        document.querySelectorAll('.type-btn').forEach(btn => {
+            btn.classList.remove('bg-ink', 'text-white', 'border-ink');
+        });
+        clickedBtn.classList.add('bg-ink', 'text-white', 'border-ink');
+
+        currentType = clickedBtn.getAttribute('data-type');
+
+        searchFilter();
+    });
+}
 
 // -------------------------------------------------------------
 // 5. CRÉER UNE CRÉATURE
