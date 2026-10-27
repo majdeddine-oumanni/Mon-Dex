@@ -170,24 +170,24 @@
       </div>
       <form id="creature-form" novalidate class="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-4">
         <label class="flex flex-col gap-1 text-sm font-bold">Numéro
-          <input name="id" type="text" placeholder="#010" class="field font-normal">
-          <span class="error-message text-sm font-normal text-muted"></span>
+          <input name="id" type="text" placeholder="#010" class="field font-normal" id="id">
+          <span class="error-message text-sm font-normal text-muted" id="idError"></span>
         </label>
         <label class="flex flex-col gap-1 text-sm font-bold">Nom
-          <input name="name" type="text" placeholder="Nom de la créature" class="field font-normal">
-          <span class="error-message text-sm font-normal text-muted"></span>
+          <input name="name" type="text" placeholder="Nom de la créature" class="field font-normal" id="name">
+          <span class="error-message text-sm font-normal text-muted" id="nameError"></span>
         </label>
         <label class="flex flex-col gap-1 text-sm font-bold">Type
-          <select name="type" class="field font-normal">
-            <option value="">Choisir un type</option>
-            <option>Feu</option><option>Eau</option><option>Plante</option>
-            <option>Électrik</option><option>Glace</option><option>Ténèbres</option>
+          <select name="type" class="field font-normal" required>
+            <option id="type">Choisir un type</option>
+            <option value="fire">Feu</option><option value="water">Eau</option><option value="grass">Plante</option>
+            <option value="electric">Électrik</option><option value="ice">Glace</option><option value="darkness">Ténèbres</option>
           </select>
           <span class="error-message text-sm font-normal text-muted"></span>
         </label>
         <label class="flex flex-col gap-1 text-sm font-bold">Niveau
-          <input name="level" type="text" placeholder="Base, Niveau 1…" class="field font-normal">
-          <span class="error-message text-sm font-normal text-muted"></span>
+          <input name="level" type="text" placeholder="Base, Niveau 1…" class="field font-normal level" id="level">
+          <span class="error-message text-sm font-normal text-muted levelError"></span>
         </label>
         <label class="flex flex-col gap-1 text-sm font-bold">Statistique 1
           <input name="stat1" type="text" placeholder="0 à 999" class="field font-normal">
@@ -202,12 +202,12 @@
           <span class="error-message text-sm font-normal text-muted"></span>
         </label>
         <label class="flex flex-col gap-1 text-sm font-bold">Lien de l'image
-          <input name="image" type="text" placeholder="https://…/image.png" class="field font-normal">
-          <span class="error-message text-sm font-normal text-muted"></span>
+          <input name="image" type="text" placeholder="https://…/image.png" class="field font-normal" id="img">
+          <span class="error-message text-sm font-normal text-muted" id="imgError"></span>
         </label>
         <label class="flex flex-col gap-1 text-sm font-bold md:col-span-2 lg:col-span-4">Description
-          <textarea name="description" rows="3" placeholder="10 à 200 caractères" class="rounded-xl border-2 border-line p-3 font-normal outline-none"></textarea>
-          <span class="error-message text-sm font-normal text-muted"></span>
+          <textarea name="description" rows="3" placeholder="10 à 200 caractères" class="rounded-xl border-2 border-line p-3 font-normal outline-none" id="description"></textarea>
+          <span class="error-message text-sm font-normal text-muted" id="descriptionError"></span>
         </label>
         <div class="flex flex-wrap justify-end gap-3 md:col-span-2 lg:col-span-4">
           <button type="reset" class="btn-outline px-6">Effacer</button>
