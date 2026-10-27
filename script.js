@@ -4,15 +4,15 @@ let cardsContainer = document.querySelector(".cards-container");
 let detailSection = document.getElementById("detail");
 let backBtn = document.getElementById("back-btn");
 
-// Keep track of creatures globally so we can look them up later easily
-let allCreatures = [];
 
-async function init() {
-    allCreatures = await getCreatures();
+let allCreatures = [];
+allCreatures = await getCreatures();
+async function init(creatures) {
+
     
     cardsContainer.innerHTML = "";
 
-    allCreatures.forEach((creature) => {
+    creatures.forEach((creature) => {
         const image = creature.sprites.other?.['official-artwork']?.front_default || creature.sprites.front_default;
         const primaryType = creature.types[0]?.type?.name || 'normal';
         const totalStats = creature.stats.reduce((sum, stat) => sum + stat.base_stat, 0);
@@ -35,7 +35,7 @@ async function init() {
     });
 }
 
-init();
+init(allCreatures);
 
 // -------------------------------------------------------------
 // 2. DÉTAIL
@@ -43,27 +43,24 @@ init();
 
 // Listen for clicks on the whole grid container (Event Delegation)
 cardsContainer.addEventListener('click', (event) => {
-    // Find the closest card wrapper when clicked
-    const card = event.target.closest('.poke-card');
-    if (!card) return; // If they didn't click a card, do nothing
 
-    // Get the ID from the card
+    const card = event.target.closest('.poke-card');
+    if (!card) return;
+
+
     const creatureId = Number(card.getAttribute('data-id'));
 
-    // Find the exact creature object from our array using its ID
+
     const creature = allCreatures.find(c => c.id === creatureId);
     if (!creature) return;
 
-    // Grab values to display
     const image = creature.sprites.other?.['official-artwork']?.front_default || creature.sprites.front_default;
     const primaryType = creature.types[0]?.type?.name || 'normal';
     
-    // Grab individual stats (Assuming standard PokeAPI stats order: HP, Attack, Defense...)
     const hp = creature.stats[0]?.base_stat || 0;
     const attack = creature.stats[1]?.base_stat || 0;
     const defense = creature.stats[2]?.base_stat || 0;
 
-    // Inject data into your existing HTML detail section structure
     detailSection.innerHTML = `
         <div class="flex items-center justify-between">
             <span class="font-mono text-sm text-muted">#${creature.id} · Détail</span>
@@ -85,16 +82,13 @@ cardsContainer.addEventListener('click', (event) => {
         <button type="button" class="btn-primary">Ajouter à l'équipe</button>
     `;
 
-    // Re-attach listener to the newly generated back button inside the detail panel
-    document.getElementById('back-btn').addEventListener('click', resetDetailView);
+    //document.getElementById('back-btn').addEventListener('click', resetDetailView);
 });
-let backButton = document.getElementById("back-btn");
-backButton.addEventListener('click', (event) => {
-    // Check if the clicked element (or its parent) is our back button
+detailSection.addEventListener('click', (event) => {
+    // Check if the clicked element (or its parent) is the back button
     const closeBtn = event.target.closest('#back-btn');
-    if (!closeBtn) return; // If they didn't click the close button, do nothing
+    if (!closeBtn) return;
 
-    // Reset the details card to say no card is selected
     detailSection.innerHTML = `
         <div class="flex flex-col items-center justify-center py-16 text-center text-muted gap-2">
             <span class="text-xl font-semibold">Aucune créature sélectionnée</span>
@@ -107,7 +101,23 @@ backButton.addEventListener('click', (event) => {
 // La liste se met à jour pendant la saisie d'un nom
 // (sans tenir compte des majuscules).
 // -------------------------------------------------------------
+const rech = document.querySelector("#search");
+const tpSelect = document.querySelector("#typeFilter");
 
+function searchFilter() {
+  const text = rech.value.toLowerCase().trim();
+  const type = tpSelect.value;
+
+    const res = allCreatures.filter((creature) => {
+    const perName = creature.name.toLowerCase().includes(text);
+    const perType = type === "tous" || creature.types[0]?.type?.name || 'normal' === type;
+
+    return perName && perType;
+  });
+  init(res);
+}
+rech.addEventListener("input", searchFilter);
+tpSelect.addEventListener("click", searchFilter);
 
 // -------------------------------------------------------------
 // 4. FILTRE
